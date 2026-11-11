@@ -3,109 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="M. RAJ ELECTRIC - Electrical products and everyday electrical essentials in Morbi, Gujarat.">
-  <meta name="theme-color" content="#101827">
-  <title>M. RAJ ELECTRIC | Electrical Store, Morbi</title>
+  <meta name="theme-color" content="#101820">
+  <title>M. RAJ ELECTRIC STORE</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#home" aria-label="M. RAJ ELECTRIC home">
-      <span class="brand-mark">M</span>
-      <span><strong>M. RAJ ELECTRIC</strong><small>YOUR ELECTRICAL STORE</small></span>
-    </a>
-    <nav>
-      <a href="#products">Products</a>
-      <a href="#accessories">Accessories</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <header class="hero">
+    <div class="brand-mark">⚡</div>
+    <p class="eyebrow">MORBI • ELECTRICAL & HOME ACCESSORIES</p>
+    <h1>M. RAJ <span>ELECTRIC</span></h1>
+    <p class="tagline">Light up your life.</p>
+    <a class="contact-top" href="https://wa.me/919275900352" target="_blank" rel="noopener">WhatsApp us</a>
   </header>
 
   <main>
-    <section class="hero" id="home">
-      <div class="hero-copy">
-        <p class="eyebrow">ELECTRICAL ESSENTIALS · MORBI, GUJARAT</p>
-        <h1>Powering your<br><span>everyday needs.</span></h1>
-        <p class="intro">From lighting and wiring to home electrical appliances, find everyday electrical essentials at M. RAJ ELECTRIC.</p>
-        <div class="actions">
-          <a class="btn primary" href="#products">Explore products</a>
-          <a class="btn secondary" href="#contact">Visit our shop</a>
-        </div>
-      </div>
-      <div class="hero-art" aria-label="Decorative electrical design">
-        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <div class="bolt">ϟ</div>
-        <span class="art-label">MRE / MORBI</span>
-      </div>
+    <section class="intro">
+      <p class="eyebrow">EXPLORE OUR STORE</p>
+      <h2>Find what you need</h2>
+      <p>Choose a category to see the items available in that section.</p>
     </section>
 
-    <section class="trust-strip">
-      <span>LIGHTING</span><i></i><span>WIRING</span><i></i><span>HOME APPLIANCES</span><i></i><span>DAILY ELECTRICAL NEEDS</span>
+    <nav class="category-nav" aria-label="Product categories">
+      <button class="category active" data-category="all">All Items</button>
+      <button class="category" data-category="lights">Lights</button>
+      <button class="category" data-category="fans">Fans</button>
+      <button class="category" data-category="wires">Wires & Cables</button>
+      <button class="category" data-category="accessories">Accessories</button>
+      <button class="category" data-category="appliances">Appliances</button>
+      <button class="category" data-category="electrical">Electrical Items</button>
+    </nav>
+
+    <section class="catalogue">
+      <div class="catalogue-heading">
+        <h2 id="section-title">All Items</h2>
+        <span id="item-count" aria-live="polite"></span>
+      </div>
+      <div class="product-grid" id="product-grid">
+        <article class="product-card" data-category="lights"><div class="product-icon">💡</div><h3>LED Bulbs</h3><p>Different types and wattages</p></article>
+        <article class="product-card" data-category="lights"><div class="product-icon">✨</div><h3>Decorative & Fairy Lights</h3><p>Decorative lighting options</p></article>
+        <article class="product-card" data-category="lights"><div class="product-icon">🔆</div><h3>Tube Lights & Panels</h3><p>Indoor lighting options</p></article>
+        <article class="product-card" data-category="lights"><div class="product-icon">🛋️</div><h3>Wall & Ceiling Lights</h3><p>Lighting for home and shop</p></article>
+
+        <article class="product-card" data-category="fans"><div class="product-icon">🌀</div><h3>Ceiling Fans</h3><p>Different designs and sizes</p></article>
+        <article class="product-card" data-category="fans"><div class="product-icon">🌬️</div><h3>Table & Wall Fans</h3><p>Cooling options for your space</p></article>
+        <article class="product-card" data-category="fans"><div class="product-icon">⚙️</div><h3>Fan Accessories</h3><p>Selected fan fittings and parts</p></article>
+
+        <article class="product-card" data-category="wires"><div class="product-icon">〰️</div><h3>Electrical Wires</h3><p>Different sizes and types</p></article>
+        <article class="product-card" data-category="wires"><div class="product-icon">🔌</div><h3>Flexible Cables</h3><p>For suitable electrical uses</p></article>
+        <article class="product-card" data-category="wires"><div class="product-icon">🧵</div><h3>Extension Cords</h3><p>Ask about available options</p></article>
+
+        <article class="product-card" data-category="accessories"><div class="product-icon">🔘</div><h3>Switches & Sockets</h3><p>Switch boards and socket types</p></article>
+        <article class="product-card" data-category="accessories"><div class="product-icon">🔌</div><h3>Plugs & Adapters</h3><p>Plugs, adapters and connectors</p></article>
+        <article class="product-card" data-category="accessories"><div class="product-icon">🔩</div><h3>Connectors & Terminals</h3><p>Electrical connection accessories</p></article>
+        <article class="product-card" data-category="accessories"><div class="product-icon">💡</div><h3>Holders & Fittings</h3><p>Bulb holders and fittings</p></article>
+        <article class="product-card" data-category="accessories"><div class="product-icon">🧰</div><h3>Cable Clips & Ties</h3><p>Wire management accessories</p></article>
+        <article class="product-card" data-category="accessories"><div class="product-icon">🛡️</div><h3>Electrical Protection</h3><p>Selected protection accessories</p></article>
+
+        <article class="product-card" data-category="appliances"><div class="product-icon">♨️</div><h3>Room Heaters</h3><p>Heating appliances</p></article>
+        <article class="product-card" data-category="appliances"><div class="product-icon">👔</div><h3>Electric Irons</h3><p>Home-use irons</p></article>
+        <article class="product-card" data-category="appliances"><div class="product-icon">🚿</div><h3>Water Heaters</h3><p>Water heating options</p></article>
+        <article class="product-card" data-category="appliances"><div class="product-icon">🍳</div><h3>Induction Cooktops</h3><p>Cooking appliances</p></article>
+
+        <article class="product-card" data-category="electrical"><div class="product-icon">🔦</div><h3>Torches & Emergency Lights</h3><p>Portable lighting</p></article>
+        <article class="product-card" data-category="electrical"><div class="product-icon">🧲</div><h3>Electrical Tools</h3><p>Ask about available tools</p></article>
+        <article class="product-card" data-category="electrical"><div class="product-icon">🎁</div><h3>Decoration Items</h3><p>Decorative electrical products</p></article>
+      </div>
+      <p class="availability-note">Product availability may vary. Contact the shop to confirm an item, brand or price.</p>
     </section>
 
-    <section class="section" id="products">
-      <div class="section-heading">
-        <p class="eyebrow">WHAT YOU CAN FIND</p>
-        <h2>Shop by category</h2>
-        <p>Explore some of the product categories available at our store.</p>
-      </div>
-      <div class="product-grid">
-        <article class="product-card"><div class="product-icon">✦</div><h3>Lighting</h3><p>Bulbs, lights and lighting essentials.</p></article>
-        <article class="product-card"><div class="product-icon">〰</div><h3>Wires & cables</h3><p>Electrical wires and connection essentials.</p></article>
-        <article class="product-card"><div class="product-icon">◉</div><h3>Fans</h3><p>Fans and everyday cooling solutions.</p></article>
-        <article class="product-card"><div class="product-icon">⌁</div><h3>Home appliances</h3><p>Heaters, induction cooktops and more.</p></article>
-        <article class="product-card"><div class="product-icon">ϟ</div><h3>Electrical items</h3><p>Torches, irons and useful electrical goods.</p></article>
-        <article class="product-card"><div class="product-icon">＋</div><h3>And more</h3><p>Ask us about other electrical products.</p></article>
-      </div>
-    </section>
-
-    <section class="section accessories-section" id="accessories">
-      <div class="section-heading">
-        <p class="eyebrow">SMALL PARTS, EVERYDAY SOLUTIONS</p>
-        <h2>Electrical accessories</h2>
-        <p>Ask us about the accessories and fittings available at M. RAJ ELECTRIC.</p>
-      </div>
-      <div class="product-grid">
-        <article class="product-card"><div class="product-icon">▣</div><h3>Switches & sockets</h3><p>Switches, socket plates and modular fittings.</p></article>
-        <article class="product-card"><div class="product-icon">⌁</div><h3>Plugs & adaptors</h3><p>Plug tops, adaptors and extension boards.</p></article>
-        <article class="product-card"><div class="product-icon">⎓</div><h3>Connectors & terminals</h3><p>Wire connectors, terminal blocks and joining items.</p></article>
-        <article class="product-card"><div class="product-icon">◉</div><h3>Holders & fittings</h3><p>Bulb holders and common lighting fittings.</p></article>
-        <article class="product-card"><div class="product-icon">⌗</div><h3>Clips & cable ties</h3><p>Useful cable clips, ties and wire management items.</p></article>
-        <article class="product-card"><div class="product-icon">ϟ</div><h3>Electrical accessories</h3><p>Ask us about other small electrical parts and essentials.</p></article>
-      </div>
-      <div class="accessory-cta"><a class="btn primary" href="https://wa.me/919275900352?text=Hello%20M.%20RAJ%20ELECTRIC%2C%20I%20want%20to%20enquire%20about%20electrical%20accessories." target="_blank" rel="noopener">Enquire about accessories on WhatsApp</a></div>
-    </section>
-
-    <section class="about-section" id="about">
-      <div class="about-symbol">M<span>.</span></div>
-      <div>
-        <p class="eyebrow">ABOUT OUR STORE</p>
-        <h2>Welcome to M. RAJ ELECTRIC.</h2>
-        <p>We are an electrical store in Morbi, Gujarat, offering a range of everyday electrical products and home essentials. Visit us to ask about products and availability.</p>
-      </div>
-    </section>
-
-    <section class="contact-section" id="contact">
-      <div>
-        <p class="eyebrow">COME SAY HELLO</p>
-        <h2>Need an electrical essential?</h2>
-        <p>Get in touch or visit M. RAJ ELECTRIC in Morbi.</p>
-      </div>
-      <div class="contact-panel">
-        <p><strong>Store</strong><span>M. RAJ ELECTRIC</span></p>
-        <p><strong>Location</strong><span>Morbi, Gujarat, India</span></p>
-        <p><strong>Phone / WhatsApp</strong><a class="contact-number" href="https://wa.me/919275900352" target="_blank" rel="noopener">+91 92759 00352</a></p>
-        <a class="btn whatsapp-btn" href="https://wa.me/919275900352?text=Hello%20M.%20RAJ%20ELECTRIC%2C%20I%20have%20an%20enquiry." target="_blank" rel="noopener">Chat with us on WhatsApp</a>
-        <p class="small-note">Message us to ask about product availability. Visit the shop in Morbi, Gujarat.</p>
-      </div>
+    <section class="contact-panel">
+      <p class="eyebrow">NEED HELP?</p>
+      <h2>Ask us about an item</h2>
+      <p>Message M. RAJ ELECTRIC on WhatsApp to check availability and prices.</p>
+      <a class="whatsapp-button" href="https://wa.me/919275900352?text=Hello%20M.%20RAJ%20ELECTRIC%2C%20I%20want%20to%20ask%20about%20a%20product." target="_blank" rel="noopener">Chat on WhatsApp</a>
     </section>
   </main>
-
-  <footer>
-    <a class="brand footer-brand" href="#home"><span class="brand-mark">M</span><span><strong>M. RAJ ELECTRIC</strong><small>YOUR ELECTRICAL STORE</small></span></a>
-    <span>© <span id="year"></span> M. RAJ ELECTRIC. All rights reserved.</span>
-  </footer>
+  <footer>© <span id="year"></span> M. RAJ ELECTRIC STORE · Morbi</footer>
   <script src="script.js"></script>
 </body>
 </html>
