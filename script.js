@@ -1,166 +1,383 @@
-document.getElementById("checkout-form").onsubmit = async function(event) {
-  event.preventDefault();
 
-  const message = document.getElementById("cart-message");
-  const submit = document.getElementById("place-order");
+(() => {
+  const SERVICE_ID = "service_yw8782y";
+  const TEMPLATE_ID = "template_v6b06u1";
+  const PUBLIC_KEY = "WajVmpw9S7DfXMoUA";
+  const SHOP_PHONE = "919275900352";
 
-  if (cart.length === 0) {
-    message.textContent = "Your cart is empty.";
-    return;
-  }
+  let cart = [];
 
-  if (!emailReady) {
-    message.textContent = "Please wait and try again.";
-    return;
-  }
+  // Footer year
+  const year = document.getElementById("year");
+  if (year) year.textContent = new Date().getFullYear();
 
-  const form = new FormData(event.target);
-  const customerName = form.get("customer_name").trim();
-  const customerPhone = form.get("customer_phone").trim();
-  const whatsappNumber = customerPhone.replace(/\D/g, "");
+  // Cart styling
+  const css = document.createElement("style");
+  css.textContent = `
+    #shop-cart-btn {
+      position:fixed; bottom:20px; right:18px; z-index:9998;
+      background:#102b46; color:white; border:0;
+      padding:14px 20px; border-radius:30px;
+      font-weight:bold; box-shadow:0 4px 15px #0003;
+    }
+    #shop-cart {
+      display:none; position:fixed; inset:0; z-index:9999;
+      background:#0009; justify-content:center; align-items:center;
+      padding:15px;
+    }
+    #shop-cart.open { display:flex; }
+    .cart-box {
+      background:white; color:#172b40; width:100%;
+      max-width:440px; max-height:85vh; overflow:auto;
+      border-radius:15px; padding:20px;
+    }
+    .cart-item {
+      display:flex; justify-content:space-between;
+      align-items:center; gap:10px;
+      padding:12px 0; border-bottom:1px solid #ddd;
+    }
+    .cart-item button {
+      padding:6px 10px; margin:2px;
+    }
+    .cart-box input {
+      width:100%; box-sizing:border-box;
+      padding:12px; margin:7px 0;
+      border:1px solid #ccc; border-radius:7px;
+    }
+    .cart-action {
+      background:#102b46; color:white; border:0;
+      padding:13px; border-radius:7px; width:100%;
+      margin-top:10px;
+    }
+    .add-cart-btn {
+      background:#102b46; color:white; border:0;
+      padding:10px 15px; border-radius:6px;
+      margin-top:10px; cursor:pointer;
+    }
+    #cart-message { margin-top:12px; line-height:1.7; }
+    #cart-message a { color:#102b46; font-weight:bold; }
+  `;
+  document.head.appendChild(css);
 
-  if (!customerName || !/^[6-9]\d{9}$/.test(whatsappNumber)) {
-    message.textContent = "Enter your name and valid 10-digit Indian WhatsApp number.";
-    return;
-  }
+  // Create cart window
+  const cartButton = document.createElement("button");
+  cartButton.id = "shop-cart-btn";
+  cartButton.innerHTML = '🛒 Cart (<span id="cart-count">0</span>)';
+  document.body.appendChild(cartButton);
 
-  submit.disabled = true;
-  submit.textContent = "Sending order...";
+  const panel = document.createElement("div");
+  panel.id = "shop-cart";
+  panel.innerHTML = `
+    <div class="cart-box">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2>Your Cart</h2>
+        <button id="close-cart" type="button">✕</button>
+      </div>
+      <div id="cart-items"></div>
+      <h3 id="cart-total">Estimated total: ₹0</h3>
+      <p style="font-size:12px">
+        Final prices will be confirmed by the shop.
+      </p>
+      <form id="checkout-form">
+        <input name="customer_name" placeholder="Your name" required>
+        <input name="customer_phone" type="tel"
+          placeholder="Your WhatsApp number" required>
+        <button class="cart-action" id="place-order" type="submit">
+          Place Order
+        </button>
+      </form>
+      <div id="cart-message"></div>
+    </div>
+  `;
+  document.body.appendChild(panel);
 
-  const orderId = "MRAJ-" + Date.now().toString().slice(-8);
+  const itemsArea = document.getElementById("cart-items");
+  const countArea = document.getElementById("cart-count");
+  const totalArea = document.getElementById("cart-total");
+  const messageArea = document.getElementById("cart-message");
 
-  const items = cart.map(item =>
-    item.name + " x " + item.qty + " - " +
-    (item.price === null ? "Price to confirm" :
-    "Rs. " + (item.price * item.qty))
-  ).join("\n");
-
-  const total = cart.reduce((sum, item) =>
-    sum + (item.price || 0) * item.qty, 0
-  );
-
-  const confirmation =
-    "Hello " + customerName + "! Your order at M. RAJ ELECTRIC is received.\n" +
-    "Order ID: " + orderId + "\n" +
-    "Items:\n" + items + "\n" +
-    "Estimated Total: Rs. " + total;
-
-  const customerLink =
-    "https://wa.me/91" + whatsappNumber +
-    "?text=" + encodeURIComponent(confirmation);
-
-  const shopLink =
-    "https://wa.me/" + PHONE +
-    "?text=" + encodeURIComponent(confirmation);
-
-  try {
-    await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-      customer_name: customerName,
-      customer_phone: whatsappNumber,
-      order_items: items,
-      order_total: "Estimated Rs. " + total,
-      order_date: new Date().toLocaleString("en-IN"),
-      order_id: orderId,
-      customer_whatsapp_link: customerLink
-    });
-
-    message.innerHTML =
-      "<b>Order received!</b><br>Confirmation ID: " + orderId +
-      "<br><a href='" + customerLink + "' target='_blank'>Customer WhatsApp</a>" +
-      "<br><a href='" + shopLink + "' target='_blank'>Shop WhatsApp</a>";
-
-    cart = [];
+  cartButton.onclick = () => {
+    panel.classList.add("open");
     renderCart();
-    event.target.reset();
-
-  } catch (error) {
-    message.textContent = "Order email failed. Please try again.";
-    console.error(error);
-  }
-
-  submit.disabled = false;
-  submit.textContent = "Place Order";
-};
-
-  const message = document.getElementById("cart-message");
-  const submit = document.getElementById("place-order");
-
-  if (!cart.length) {
-    message.textContent = "Your cart is empty.";
-    return;
-  }
-
-  if (!emailReady) {
-    message.textContent = "Please wait and try again.";
-    return;
-  }
-
-  submit.disabled = true;
-  submit.textContent = "Sending order...";
-
-  const form = new FormData(event.target);
-  const customerName = form.get("customer_name");
-  const customerPhone = String(form.get("customer_phone")).replace(/\D/g, "");
-
-  let whatsappNumber = customerPhone;
-  if (whatsappNumber.length === 10) whatsappNumber = "91" + whatsappNumber;
-
-  if (whatsappNumber.length !== 12 || !whatsappNumber.startsWith("91")) {
-    message.textContent = "Please enter a valid Indian WhatsApp number.";
-    submit.disabled = false;
-    submit.textContent = "Place Order";
-    return;
-  }
-
-  const orderId = "MRAJ-" + Date.now().toString().slice(-8);
-
-  const total = cart.reduce((sum, item) =>
-    sum + (item.price || 0) * item.qty, 0);
-
-  const items = cart.map(item =>
-    `${item.name} × ${item.qty} — ${
-      item.price === null ? "Price to confirm" :
-      "₹" + (item.price * item.qty).toLocaleString("en-IN")
-    }`
-  ).join("\n");
-
-  const confirmationMessage =
-    `Hello ${customerName}! Your order at M. RAJ ELECTRIC has been received.\n\n` +
-    `Order Confirmation ID: ${orderId}\n\n` +
-    `Items:\n${items}\n\n` +
-    `Estimated Total: ₹${total.toLocaleString("en-IN")}\n\n` +
-    `Thank you!`;
-
-  const customerWhatsappLink =
-    "https://wa.me/" + whatsappNumber +
-    "?text=" + encodeURIComponent(confirmationMessage);
-
-  const details = {
-    customer_name: customerName,
-    customer_phone: customerPhone,
-    order_items: items,
-    order_total: "Estimated ₹" + total.toLocaleString("en-IN"),
-    order_date: new Date().toLocaleString("en-IN"),
-    order_id: orderId,
-    customer_whatsapp_link: customerWhatsappLink
   };
 
-  try {
-    await emailjs.send(SERVICE_ID, TEMPLATE_ID, details);
+  document.getElementById("close-cart").onclick = () => {
+    panel.classList.remove("open");
+  };
 
-    message.innerHTML =
-      `Order received!<br><strong>Confirmation ID: ${orderId}</strong><br>` +
-      `<a href="${customerWhatsappLink}" target="_blank">Send confirmation to customer on WhatsApp</a>`;
+  panel.addEventListener("click", event => {
+    if (event.target === panel) panel.classList.remove("open");
+  });
 
-    cart = [];
-    renderCart();
-    event.target.reset();
-
-  } catch (error) {
-    message.textContent = "Order email failed. Please try again.";
-    console.error(error);
+  // Read product price
+  function getPrice(card) {
+    const text = card.querySelector(".price")?.textContent || "";
+    const match = text.replace(/,/g, "").match(/\d+(?:\.\d+)?/);
+    return match ? Number(match[0]) : null;
   }
 
-  submit.disabled = false;
-  submit.textContent = "Place Order";
-};
+  // Display cart
+  function renderCart() {
+    itemsArea.innerHTML = "";
+    let total = 0;
+    let count = 0;
+
+    cart.forEach((item, index) => {
+      count += item.qty;
+      if (item.price !== null) total += item.price * item.qty;
+
+      const row = document.createElement("div");
+      row.className = "cart-item";
+
+      const details = document.createElement("div");
+      const name = document.createElement("strong");
+      name.textContent = item.name;
+
+      const price = document.createElement("div");
+      price.textContent = item.price === null
+        ? "Price to confirm"
+        : "₹" + item.price.toLocaleString("en-IN");
+
+      details.append(name, price);
+
+      const controls = document.createElement("div");
+
+      function addControl(label, action) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = label;
+        button.onclick = action;
+        controls.appendChild(button);
+      }
+
+      addControl("−", () => changeQty(index, -1));
+
+      const quantity = document.createElement("span");
+      quantity.textContent = " " + item.qty + " ";
+      controls.appendChild(quantity);
+
+      addControl("+", () => changeQty(index, 1));
+      addControl("✕", () => {
+        cart.splice(index, 1);
+        renderCart();
+      });
+
+      row.append(details, controls);
+      itemsArea.appendChild(row);
+    });
+
+    if (!cart.length) {
+      itemsArea.textContent = "Your cart is empty.";
+    }
+
+    countArea.textContent = count;
+    totalArea.textContent =
+      "Estimated total: ₹" + total.toLocaleString("en-IN");
+  }
+
+  function changeQty(index, amount) {
+    if (!cart[index]) return;
+    cart[index].qty += amount;
+    if (cart[index].qty <= 0) cart.splice(index, 1);
+    renderCart();
+  }
+
+  // Add buttons to products
+  document.querySelectorAll(".product-card").forEach(card => {
+    const oldButton = card.querySelector(".add-cart-btn");
+    if (oldButton) oldButton.remove();
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "add-cart-btn";
+    button.textContent = "Add to Cart";
+
+    button.onclick = () => {
+      const name = card.querySelector("h3")?.textContent.trim();
+      if (!name) return;
+
+      const existing = cart.find(item => item.name === name);
+
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({
+          name,
+          price: getPrice(card),
+          qty: 1
+        });
+      }
+
+      renderCart();
+      button.textContent = "Added ✓";
+      setTimeout(() => button.textContent = "Add to Cart", 1200);
+    };
+
+    card.appendChild(button);
+  });
+
+  // Category filters
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const category = button.dataset.filter;
+
+      document.querySelectorAll(".product-card").forEach(card => {
+        card.hidden =
+          category !== "all" && card.dataset.category !== category;
+      });
+
+      filterButtons.forEach(btn => {
+        btn.classList.remove("active");
+        btn.setAttribute("aria-pressed", "false");
+      });
+
+      button.classList.add("active");
+      button.setAttribute("aria-pressed", "true");
+
+      const title = document.getElementById("catalogue-title");
+      const count = document.getElementById("catalogue-count");
+
+      if (title) {
+        title.textContent =
+          button.textContent.trim();
+      }
+
+      if (count) {
+        const visible = [...document.querySelectorAll(".product-card")]
+          .filter(card => !card.hidden).length;
+        count.textContent = visible + " items";
+      }
+    });
+  });
+
+  // Load EmailJS
+  const emailReady = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src =
+      "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+    script.onload = () => {
+      window.emailjs.init({ publicKey: PUBLIC_KEY });
+      resolve();
+    };
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+
+  function makeOrderId() {
+    const d = new Date();
+    const date = [
+      d.getFullYear(),
+      String(d.getMonth() + 1).padStart(2, "0"),
+      String(d.getDate()).padStart(2, "0")
+    ].join("");
+
+    return "MRAJ-" + date + "-" +
+      Math.floor(1000 + Math.random() * 9000);
+  }
+
+  // Checkout
+  document.getElementById("checkout-form").onsubmit =
+    async function(event) {
+      event.preventDefault();
+
+      if (!cart.length) {
+        messageArea.textContent = "Your cart is empty.";
+        return;
+      }
+
+      const form = new FormData(event.currentTarget);
+      const customerName =
+        String(form.get("customer_name") || "").trim();
+      const rawPhone =
+        String(form.get("customer_phone") || "").replace(/\D/g, "");
+
+      let phone = rawPhone;
+      if (phone.length === 10) phone = "91" + phone;
+
+      if (!customerName || !/^91[6-9]\d{9}$/.test(phone)) {
+        messageArea.textContent =
+          "Please enter your name and a valid Indian WhatsApp number.";
+        return;
+      }
+
+      const submit = document.getElementById("place-order");
+      submit.disabled = true;
+      submit.textContent = "Sending order...";
+      messageArea.textContent = "Please wait...";
+
+      const orderId = makeOrderId();
+
+      const orderItems = cart.map(item =>
+        item.name + " x " + item.qty + " - " +
+        (item.price === null
+          ? "Price to confirm"
+          : "₹" + (item.price * item.qty).toLocaleString("en-IN"))
+      ).join("\n");
+
+      const total = cart.reduce((sum, item) =>
+        sum + (item.price || 0) * item.qty, 0
+      );
+
+      const confirmation =
+        "Hello " + customerName +
+        "! Your order at M. RAJ ELECTRIC has been received.\n\n" +
+        "Order ID: " + orderId + "\n\n" +
+        "Items:\n" + orderItems + "\n\n" +
+        "Estimated Total: ₹" + total.toLocaleString("en-IN") +
+        "\nThank you!";
+
+      const customerLink =
+        "https://wa.me/" + phone +
+        "?text=" + encodeURIComponent(confirmation);
+
+      try {
+        await emailReady;
+
+        await window.emailjs.send(
+          SERVICE_ID,
+          TEMPLATE_ID,
+          {
+            customer_name: customerName,
+            customer_phone: phone,
+            order_items: orderItems,
+            order_total: "Estimated ₹" +
+              total.toLocaleString("en-IN"),
+            order_date: new Date().toLocaleString("en-IN"),
+            order_id: orderId,
+            customer_whatsapp_link: customerLink
+          }
+        );
+
+        messageArea.innerHTML = "";
+
+        const success = document.createElement("strong");
+        success.textContent = "Order received successfully!";
+
+        const id = document.createElement("p");
+        id.textContent = "Confirmation ID: " + orderId;
+
+        const link = document.createElement("a");
+        link.href = customerLink;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = "Open customer's WhatsApp confirmation";
+
+        messageArea.append(success, id, link);
+
+        cart = [];
+        renderCart();
+        event.currentTarget.reset();
+
+      } catch (error) {
+        console.error("Order error:", error);
+        messageArea.textContent =
+          "Order could not be emailed. Please try again or contact the shop.";
+      }
+
+      submit.disabled = false;
+      submit.textContent = "Place Order";
+    };
+
+  renderCart();
+})();
