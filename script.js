@@ -1,4 +1,4 @@
--
+r-
 (() => {
   "use strict";
 
@@ -318,7 +318,7 @@
 
         cart = [];
         renderCart();
-        event.currentTarget.reset();
+        document.getElementById("checkout-form").reset();
 
       } catch (error) {
         console.error("Order error:", error);
