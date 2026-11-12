@@ -1,4 +1,4 @@
-
+-
 (() => {
   "use strict";
 
@@ -101,7 +101,6 @@
   panel.addEventListener("click", event => {
     if (event.target === panel) panel.classList.remove("open");
   });
-
   function getPrice(card) {
     const text = card.querySelector(".price")?.textContent || "";
     const match = text.replace(/,/g, "").match(/\d+(?:\.\d+)?/);
@@ -184,6 +183,7 @@
       if (!name) return;
 
       const existing = cart.find(item => item.name === name);
+
       if (existing) existing.qty++;
       else cart.push({ name, price: getPrice(card), qty: 1 });
 
@@ -194,7 +194,7 @@
 
     card.appendChild(button);
   });
-
+  // Load EmailJS
   const emailReady = new Promise((resolve, reject) => {
     if (window.emailjs) {
       window.emailjs.init({ publicKey: PUBLIC_KEY });
@@ -208,16 +208,16 @@
 
     emailScript.onload = () => {
       if (!window.emailjs) {
-        reject(new Error("EmailJS library was not found."));
+        reject(new Error("EmailJS library did not load."));
         return;
       }
+
       window.emailjs.init({ publicKey: PUBLIC_KEY });
       resolve();
     };
 
-    emailScript.onerror = () => {
+    emailScript.onerror = () =>
       reject(new Error("Could not load EmailJS. Check your internet connection."));
-    };
 
     document.head.appendChild(emailScript);
   });
@@ -244,7 +244,6 @@
       }
 
       const form = new FormData(event.currentTarget);
-
       const customerName =
         String(form.get("customer_name") || "").trim();
 
@@ -276,7 +275,6 @@
 
       const total = cart.reduce((sum, item) =>
         sum + (item.price || 0) * item.qty, 0);
-
       const confirmation =
         "Hello " + customerName +
         "! Your order at M. RAJ ELECTRIC has been received.\n\n" +
@@ -292,19 +290,15 @@
       try {
         await emailReady;
 
-        await window.emailjs.send(
-          SERVICE_ID,
-          TEMPLATE_ID,
-          {
-            customer_name: customerName,
-            customer_phone: phone,
-            order_items: orderItems,
-            order_total: "Estimated ₹" + total.toLocaleString("en-IN"),
-            order_date: new Date().toLocaleString("en-IN"),
-            order_id: orderId,
-            customer_whatsapp_link: customerLink
-          }
-        );
+        await window.emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+          customer_name: customerName,
+          customer_phone: phone,
+          order_items: orderItems,
+          order_total: "Estimated ₹" + total.toLocaleString("en-IN"),
+          order_date: new Date().toLocaleString("en-IN"),
+          order_id: orderId,
+          customer_whatsapp_link: customerLink
+        });
 
         messageArea.innerHTML = "";
 
@@ -329,18 +323,14 @@
       } catch (error) {
         console.error("Order error:", error);
 
-        const errorText =
-          error?.text || error?.message || String(error) ||
-          "Unknown error. Please try again.";
-
         messageArea.textContent =
-          "EMAIL ERROR: " + errorText;
-      } finally {
-        submit.disabled = false;
-        submit.textContent = "Place Order";
+          "EMAIL ERROR: " +
+          (error?.text || error?.message || String(error));
       }
+
+      submit.disabled = false;
+      submit.textContent = "Place Order";
     };
 
   renderCart();
 })();
-
