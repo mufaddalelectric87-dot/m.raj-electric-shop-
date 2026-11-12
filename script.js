@@ -471,7 +471,9 @@
       renderCart();
 
       // Reset using the permanent form reference
-      checkoutForm.reset();
+      if (checkoutForm) {
+  checkoutForm.reset();
+      }
 
     } catch (error) {
       console.error("Order error:", error);
