@@ -5,15 +5,12 @@
   const SERVICE_ID = "service_yw8782y";
   const TEMPLATE_ID = "template_v6b06u1";
   const PUBLIC_KEY = "WajVmpw9S7DfXMoUA";
-  const SHOP_PHONE = "919275900352";
 
   let cart = [];
 
-  // Footer year
   const year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
 
-  // Cart design
   const style = document.createElement("style");
   style.textContent = `
     #shop-cart-btn {
@@ -49,17 +46,17 @@
       padding:13px; border-radius:7px; width:100%;
       margin-top:10px; cursor:pointer;
     }
+    .cart-action:disabled { opacity:.65; cursor:wait; }
     .add-cart-btn {
       background:#102b46; color:white; border:0;
       padding:10px 15px; border-radius:6px;
       margin-top:10px; cursor:pointer;
     }
-    #cart-message { margin-top:12px; line-height:1.7; }
+    #cart-message { margin-top:12px; line-height:1.7; overflow-wrap:anywhere; }
     #cart-message a { color:#102b46; font-weight:bold; }
   `;
   document.head.appendChild(style);
 
-  // Create cart
   document.body.insertAdjacentHTML("beforeend", `
     <button id="shop-cart-btn" type="button">
       🛒 Cart (<span id="cart-count">0</span>)
@@ -81,7 +78,7 @@
             Place Order
           </button>
         </form>
-        <div id="cart-message"></div>
+        <div id="cart-message" role="status"></div>
       </div>
     </div>
   `);
@@ -174,7 +171,6 @@
     renderCart();
   }
 
-  // Add to Cart buttons
   document.querySelectorAll(".product-card").forEach(card => {
     if (card.querySelector(".add-cart-btn")) return;
 
@@ -188,7 +184,6 @@
       if (!name) return;
 
       const existing = cart.find(item => item.name === name);
-
       if (existing) existing.qty++;
       else cart.push({ name, price: getPrice(card), qty: 1 });
 
@@ -200,16 +195,30 @@
     card.appendChild(button);
   });
 
-  // EmailJS loading
   const emailReady = new Promise((resolve, reject) => {
+    if (window.emailjs) {
+      window.emailjs.init({ publicKey: PUBLIC_KEY });
+      resolve();
+      return;
+    }
+
     const emailScript = document.createElement("script");
     emailScript.src =
       "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+
     emailScript.onload = () => {
+      if (!window.emailjs) {
+        reject(new Error("EmailJS library was not found."));
+        return;
+      }
       window.emailjs.init({ publicKey: PUBLIC_KEY });
       resolve();
     };
-    emailScript.onerror = reject;
+
+    emailScript.onerror = () => {
+      reject(new Error("Could not load EmailJS. Check your internet connection."));
+    };
+
     document.head.appendChild(emailScript);
   });
 
@@ -220,11 +229,11 @@
       String(d.getMonth() + 1).padStart(2, "0"),
       String(d.getDate()).padStart(2, "0")
     ].join("");
+
     return "MRAJ-" + date + "-" +
       Math.floor(1000 + Math.random() * 9000);
   }
 
-  // Order checkout
   document.getElementById("checkout-form").onsubmit =
     async function(event) {
       event.preventDefault();
@@ -235,8 +244,10 @@
       }
 
       const form = new FormData(event.currentTarget);
+
       const customerName =
         String(form.get("customer_name") || "").trim();
+
       const rawPhone =
         String(form.get("customer_phone") || "").replace(/\D/g, "");
 
@@ -281,15 +292,19 @@
       try {
         await emailReady;
 
-        await window.emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-          customer_name: customerName,
-          customer_phone: phone,
-          order_items: orderItems,
-          order_total: "Estimated ₹" + total.toLocaleString("en-IN"),
-          order_date: new Date().toLocaleString("en-IN"),
-          order_id: orderId,
-          customer_whatsapp_link: customerLink
-        });
+        await window.emailjs.send(
+          SERVICE_ID,
+          TEMPLATE_ID,
+          {
+            customer_name: customerName,
+            customer_phone: phone,
+            order_items: orderItems,
+            order_total: "Estimated ₹" + total.toLocaleString("en-IN"),
+            order_date: new Date().toLocaleString("en-IN"),
+            order_id: orderId,
+            customer_whatsapp_link: customerLink
+          }
+        );
 
         messageArea.innerHTML = "";
 
@@ -313,13 +328,19 @@
 
       } catch (error) {
         console.error("Order error:", error);
-        messageArea.textContent =
-          "Order could not be emailed. Please try again or contact the shop.";
-      }
 
-      submit.disabled = false;
-      submit.textContent = "Place Order";
+        const errorText =
+          error?.text || error?.message || String(error) ||
+          "Unknown error. Please try again.";
+
+        messageArea.textContent =
+          "EMAIL ERROR: " + errorText;
+      } finally {
+        submit.disabled = false;
+        submit.textContent = "Place Order";
+      }
     };
 
   renderCart();
 })();
+
