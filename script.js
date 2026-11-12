@@ -4,7 +4,7 @@
 
   const SERVICE_ID = "service_yw8782y";
   const TEMPLATE_ID = "template_v6b06u1";
-  const PUBLIC_KEY = "WajVmpw9S7DfXMoUA";
+  const PUBLIC_KEY = "s9eyXoUbiYU_TyH4";
 
   let cart = [];
 
