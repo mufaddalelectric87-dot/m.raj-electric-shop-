@@ -1,4 +1,4 @@
-r-
+
 (() => {
   "use strict";
 
@@ -11,74 +11,160 @@ r-
   const year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
 
+  // CART DESIGN
   const style = document.createElement("style");
   style.textContent = `
     #shop-cart-btn {
-      position:fixed; bottom:20px; right:18px; z-index:9998;
-      background:#102b46; color:white; border:0;
-      padding:14px 20px; border-radius:30px;
-      font-weight:bold; box-shadow:0 4px 15px #0003;
+      position:fixed;
+      bottom:20px;
+      right:18px;
+      z-index:9998;
+      background:#102b46;
+      color:white;
+      border:0;
+      padding:14px 20px;
+      border-radius:30px;
+      font-weight:bold;
+      box-shadow:0 4px 15px #0003;
       cursor:pointer;
     }
+
     #shop-cart {
-      display:none; position:fixed; inset:0; z-index:9999;
-      background:#0009; justify-content:center; align-items:center;
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background:#0009;
+      justify-content:center;
+      align-items:center;
       padding:15px;
     }
-    #shop-cart.open { display:flex; }
+
+    #shop-cart.open {
+      display:flex;
+    }
+
     .cart-box {
-      background:white; color:#172b40; width:100%;
-      max-width:440px; max-height:85vh; overflow:auto;
-      border-radius:15px; padding:20px;
+      background:white;
+      color:#172b40;
+      width:100%;
+      max-width:440px;
+      max-height:85vh;
+      overflow:auto;
+      border-radius:15px;
+      padding:20px;
     }
+
     .cart-item {
-      display:flex; justify-content:space-between;
-      align-items:center; gap:10px;
-      padding:12px 0; border-bottom:1px solid #ddd;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:12px 0;
+      border-bottom:1px solid #ddd;
     }
-    .cart-item button { padding:6px 10px; margin:2px; }
+
+    .cart-item button {
+      padding:6px 10px;
+      margin:2px;
+    }
+
     .cart-box input {
-      width:100%; box-sizing:border-box; padding:12px;
-      margin:7px 0; border:1px solid #ccc; border-radius:7px;
+      width:100%;
+      box-sizing:border-box;
+      padding:12px;
+      margin:7px 0;
+      border:1px solid #ccc;
+      border-radius:7px;
     }
+
     .cart-action {
-      background:#102b46; color:white; border:0;
-      padding:13px; border-radius:7px; width:100%;
-      margin-top:10px; cursor:pointer;
+      background:#102b46;
+      color:white;
+      border:0;
+      padding:13px;
+      border-radius:7px;
+      width:100%;
+      margin-top:10px;
+      cursor:pointer;
     }
-    .cart-action:disabled { opacity:.65; cursor:wait; }
+
+    .cart-action:disabled {
+      opacity:.65;
+      cursor:wait;
+    }
+
     .add-cart-btn {
-      background:#102b46; color:white; border:0;
-      padding:10px 15px; border-radius:6px;
-      margin-top:10px; cursor:pointer;
+      background:#102b46;
+      color:white;
+      border:0;
+      padding:10px 15px;
+      border-radius:6px;
+      margin-top:10px;
+      cursor:pointer;
     }
-    #cart-message { margin-top:12px; line-height:1.7; overflow-wrap:anywhere; }
-    #cart-message a { color:#102b46; font-weight:bold; }
+
+    #cart-message {
+      margin-top:12px;
+      line-height:1.7;
+      overflow-wrap:anywhere;
+    }
+
+    #cart-message a {
+      color:#102b46;
+      font-weight:bold;
+    }
   `;
+
   document.head.appendChild(style);
 
+  // CART HTML
   document.body.insertAdjacentHTML("beforeend", `
     <button id="shop-cart-btn" type="button">
       🛒 Cart (<span id="cart-count">0</span>)
     </button>
+
     <div id="shop-cart">
       <div class="cart-box">
+
         <div style="display:flex;justify-content:space-between;align-items:center">
           <h2>Your Cart</h2>
           <button id="close-cart" type="button">✕</button>
         </div>
+
         <div id="cart-items"></div>
+
         <h3 id="cart-total">Estimated total: ₹0</h3>
-        <p style="font-size:12px">Final prices will be confirmed by the shop.</p>
+
+        <p style="font-size:12px">
+          Final prices will be confirmed by the shop.
+        </p>
+
         <form id="checkout-form">
-          <input name="customer_name" placeholder="Your name" required>
-          <input name="customer_phone" type="tel"
-            placeholder="Your WhatsApp number" required>
-          <button class="cart-action" id="place-order" type="submit">
+          <input
+            name="customer_name"
+            placeholder="Your name"
+            required
+          >
+
+          <input
+            name="customer_phone"
+            type="tel"
+            placeholder="Your WhatsApp number"
+            required
+          >
+
+          <button
+            class="cart-action"
+            id="place-order"
+            type="submit"
+          >
             Place Order
           </button>
         </form>
+
         <div id="cart-message" role="status"></div>
+
       </div>
     </div>
   `);
@@ -89,44 +175,61 @@ r-
   const totalArea = document.getElementById("cart-total");
   const messageArea = document.getElementById("cart-message");
 
+  // Permanent form reference
+  const checkoutForm = document.getElementById("checkout-form");
+
+  // OPEN CART
   document.getElementById("shop-cart-btn").onclick = () => {
     panel.classList.add("open");
     renderCart();
   };
 
+  // CLOSE CART
   document.getElementById("close-cart").onclick = () => {
     panel.classList.remove("open");
   };
 
   panel.addEventListener("click", event => {
-    if (event.target === panel) panel.classList.remove("open");
+    if (event.target === panel) {
+      panel.classList.remove("open");
+    }
   });
+
+  // GET PRODUCT PRICE
   function getPrice(card) {
     const text = card.querySelector(".price")?.textContent || "";
     const match = text.replace(/,/g, "").match(/\d+(?:\.\d+)?/);
+
     return match ? Number(match[0]) : null;
   }
 
+  // DISPLAY CART
   function renderCart() {
     itemsArea.innerHTML = "";
+
     let total = 0;
     let count = 0;
 
     cart.forEach((item, index) => {
       count += item.qty;
-      if (item.price !== null) total += item.price * item.qty;
+
+      if (item.price !== null) {
+        total += item.price * item.qty;
+      }
 
       const row = document.createElement("div");
       row.className = "cart-item";
 
       const details = document.createElement("div");
+
       const name = document.createElement("strong");
       name.textContent = item.name;
 
       const price = document.createElement("div");
-      price.textContent = item.price === null
-        ? "Price to confirm"
-        : "₹" + item.price.toLocaleString("en-IN");
+      price.textContent =
+        item.price === null
+          ? "Price to confirm"
+          : "₹" + item.price.toLocaleString("en-IN");
 
       details.append(name, price);
 
@@ -147,6 +250,7 @@ r-
       controls.appendChild(quantity);
 
       addControl("+", () => changeQty(index, 1));
+
       addControl("✕", () => {
         cart.splice(index, 1);
         renderCart();
@@ -156,53 +260,81 @@ r-
       itemsArea.appendChild(row);
     });
 
-    if (!cart.length) itemsArea.textContent = "Your cart is empty.";
+    if (!cart.length) {
+      itemsArea.textContent = "Your cart is empty.";
+    }
 
     countArea.textContent = count;
+
     totalArea.textContent =
       "Estimated total: ₹" + total.toLocaleString("en-IN");
   }
 
+  // CHANGE QUANTITY
   function changeQty(index, amount) {
     if (!cart[index]) return;
+
     cart[index].qty += amount;
-    if (cart[index].qty <= 0) cart.splice(index, 1);
+
+    if (cart[index].qty <= 0) {
+      cart.splice(index, 1);
+    }
+
     renderCart();
   }
 
+  // ADD TO CART BUTTONS
   document.querySelectorAll(".product-card").forEach(card => {
     if (card.querySelector(".add-cart-btn")) return;
 
     const button = document.createElement("button");
+
     button.type = "button";
     button.className = "add-cart-btn";
     button.textContent = "Add to Cart";
 
     button.onclick = () => {
       const name = card.querySelector("h3")?.textContent.trim();
+
       if (!name) return;
 
       const existing = cart.find(item => item.name === name);
 
-      if (existing) existing.qty++;
-      else cart.push({ name, price: getPrice(card), qty: 1 });
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({
+          name,
+          price: getPrice(card),
+          qty: 1
+        });
+      }
 
       renderCart();
+
       button.textContent = "Added ✓";
-      setTimeout(() => button.textContent = "Add to Cart", 1200);
+
+      setTimeout(() => {
+        button.textContent = "Add to Cart";
+      }, 1200);
     };
 
     card.appendChild(button);
   });
-  // Load EmailJS
+
+  // LOAD EMAILJS
   const emailReady = new Promise((resolve, reject) => {
     if (window.emailjs) {
-      window.emailjs.init({ publicKey: PUBLIC_KEY });
+      window.emailjs.init({
+        publicKey: PUBLIC_KEY
+      });
+
       resolve();
       return;
     }
 
     const emailScript = document.createElement("script");
+
     emailScript.src =
       "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
 
@@ -212,18 +344,24 @@ r-
         return;
       }
 
-      window.emailjs.init({ publicKey: PUBLIC_KEY });
+      window.emailjs.init({
+        publicKey: PUBLIC_KEY
+      });
+
       resolve();
     };
 
-    emailScript.onerror = () =>
-      reject(new Error("Could not load EmailJS. Check your internet connection."));
+    emailScript.onerror = () => {
+      reject(new Error("Could not load EmailJS. Check internet connection."));
+    };
 
     document.head.appendChild(emailScript);
   });
 
+  // GENERATE ORDER ID
   function makeOrderId() {
     const d = new Date();
+
     const date = [
       d.getFullYear(),
       String(d.getMonth() + 1).padStart(2, "0"),
@@ -234,63 +372,75 @@ r-
       Math.floor(1000 + Math.random() * 9000);
   }
 
-  document.getElementById("checkout-form").onsubmit =
-    async function(event) {
-      event.preventDefault();
+  // PLACE ORDER
+  checkoutForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-      if (!cart.length) {
-        messageArea.textContent = "Your cart is empty.";
-        return;
-      }
+    if (!cart.length) {
+      messageArea.textContent = "Your cart is empty.";
+      return;
+    }
 
-      const form = new FormData(event.currentTarget);
-      const customerName =
-        String(form.get("customer_name") || "").trim();
+    const formData = new FormData(checkoutForm);
 
-      const rawPhone =
-        String(form.get("customer_phone") || "").replace(/\D/g, "");
+    const customerName =
+      String(formData.get("customer_name") || "").trim();
 
-      let phone = rawPhone;
-      if (phone.length === 10) phone = "91" + phone;
+    const rawPhone =
+      String(formData.get("customer_phone") || "").replace(/\D/g, "");
 
-      if (!customerName || !/^91[6-9]\d{9}$/.test(phone)) {
-        messageArea.textContent =
-          "Please enter your name and a valid Indian WhatsApp number.";
-        return;
-      }
+    let phone = rawPhone;
 
-      const submit = document.getElementById("place-order");
-      submit.disabled = true;
-      submit.textContent = "Sending order...";
-      messageArea.textContent = "Please wait...";
+    if (phone.length === 10) {
+      phone = "91" + phone;
+    }
 
-      const orderId = makeOrderId();
+    if (!customerName || !/^91[6-9]\d{9}$/.test(phone)) {
+      messageArea.textContent =
+        "Please enter your name and a valid Indian WhatsApp number.";
+      return;
+    }
 
-      const orderItems = cart.map(item =>
-        item.name + " x " + item.qty + " - " +
-        (item.price === null
+    const submit = document.getElementById("place-order");
+
+    submit.disabled = true;
+    submit.textContent = "Sending order...";
+    messageArea.textContent = "Please wait...";
+
+    const orderId = makeOrderId();
+
+    const orderItems = cart.map(item =>
+      item.name + " x " + item.qty + " - " +
+      (
+        item.price === null
           ? "Price to confirm"
-          : "₹" + (item.price * item.qty).toLocaleString("en-IN"))
-      ).join("\n");
+          : "₹" + (item.price * item.qty).toLocaleString("en-IN")
+      )
+    ).join("\n");
 
-      const total = cart.reduce((sum, item) =>
-        sum + (item.price || 0) * item.qty, 0);
-      const confirmation =
-        "Hello " + customerName +
-        "! Your order at M. RAJ ELECTRIC has been received.\n\n" +
-        "Order ID: " + orderId + "\n\n" +
-        "Items:\n" + orderItems + "\n\n" +
-        "Estimated Total: ₹" + total.toLocaleString("en-IN") +
-        "\nThank you!";
+    const total = cart.reduce((sum, item) =>
+      sum + (item.price || 0) * item.qty, 0
+    );
 
-      const customerLink =
-        "https://wa.me/" + phone +
-        "?text=" + encodeURIComponent(confirmation);
+    const confirmation =
+      "Hello " + customerName +
+      "! Your order at M. RAJ ELECTRIC has been received.\n\n" +
+      "Order ID: " + orderId + "\n\n" +
+      "Items:\n" + orderItems + "\n\n" +
+      "Estimated Total: ₹" + total.toLocaleString("en-IN") +
+      "\nThank you!";
 
-      try {
-        await emailReady;
+    const customerLink =
+      "https://wa.me/" + phone +
+      "?text=" + encodeURIComponent(confirmation);
 
-        await window.emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+    try {
+      await emailReady;
+
+      await window.emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
           customer_name: customerName,
           customer_phone: phone,
           order_items: orderItems,
@@ -298,39 +448,45 @@ r-
           order_date: new Date().toLocaleString("en-IN"),
           order_id: orderId,
           customer_whatsapp_link: customerLink
-        });
+        }
+      );
 
-        messageArea.innerHTML = "";
+      messageArea.innerHTML = "";
 
-        const success = document.createElement("strong");
-        success.textContent = "Order received successfully!";
+      const success = document.createElement("strong");
+      success.textContent = "Order received successfully!";
 
-        const id = document.createElement("p");
-        id.textContent = "Confirmation ID: " + orderId;
+      const id = document.createElement("p");
+      id.textContent = "Confirmation ID: " + orderId;
 
-        const link = document.createElement("a");
-        link.href = customerLink;
-        link.target = "_blank";
-        link.rel = "noopener";
-        link.textContent = "Open WhatsApp confirmation";
+      const link = document.createElement("a");
+      link.href = customerLink;
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.textContent = "Open WhatsApp confirmation";
 
-        messageArea.append(success, id, link);
+      messageArea.append(success, id, link);
 
-        cart = [];
-        renderCart();
-        document.getElementById("checkout-form").reset();
+      cart = [];
+      renderCart();
 
-      } catch (error) {
-        console.error("Order error:", error);
+      // Reset using the permanent form reference
+      checkoutForm.reset();
 
-        messageArea.textContent =
-          "EMAIL ERROR: " +
-          (error?.text || error?.message || String(error));
-      }
+    } catch (error) {
+      console.error("Order error:", error);
 
+      messageArea.textContent =
+        "EMAIL ERROR: " +
+        (error?.text || error?.message || String(error));
+
+    } finally {
       submit.disabled = false;
       submit.textContent = "Place Order";
-    };
+    }
+  });
 
   renderCart();
+
 })();
+
