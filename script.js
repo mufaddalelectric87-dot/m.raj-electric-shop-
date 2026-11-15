@@ -1,4 +1,3 @@
-
 (() => {
   "use strict";
 
@@ -8,778 +7,229 @@
   const SHOP_PHONE = "919275900352";
   const UPI_ID = "Q698380663@ybl";
 
+  // Product image URLs can be added to each product's images array after exact models are confirmed.
+  const products = [
+    {id:"bajaj-ivora-25w",name:"Bajaj LED Batten Ivora 25W",brand:"Bajaj",department:"Lighting",type:"LED Battens",price:699,description:"25W LED batten for everyday indoor lighting.",specs:["Brand: Bajaj","Power: 25W","Type: LED batten"],symbol:"▰"},
+    {id:"bajaj-led-bulb",name:"Bajaj LED Bulb",brand:"Bajaj",department:"Lighting",type:"LED Bulbs",price:null,description:"LED bulb range. Ask the shop for wattage and current price.",specs:["Brand: Bajaj","Wattage: Confirm with shop"],symbol:"◉"},
+    {id:"panel-down-lights",name:"Panel & Down Lights",brand:"Multiple brands",department:"Lighting",type:"Panel & Downlights",price:null,description:"Panel lights and recessed downlights in different sizes.",specs:["Type: Panel / downlight","Sizes and wattages: Confirm with shop"],symbol:"◎"},
+    {id:"decorative-strip-lights",name:"Decorative & Strip Lights",brand:"Multiple brands",department:"Lighting",type:"Decorative Lights",price:null,description:"Decorative lighting and LED strip options.",specs:["Type: Decorative / strip lighting","Colour and length: Confirm with shop"],symbol:"✧"},
+    {id:"shapy-150-35m",name:"SHAPY 150-Lamp LED Series · 35m",brand:"SHAPY",department:"Lighting",type:"LED Series",price:360,description:"150-lamp decorative LED series, 35 metres.",specs:["Brand: SHAPY","Lamps: 150","Length: 35m"],symbol:"✦"},
+    {id:"shapy-250-48m",name:"SHAPY 250-Lamp LED Series · 48m",brand:"SHAPY",department:"Lighting",type:"LED Series",price:440,description:"250-lamp decorative LED series, 48 metres.",specs:["Brand: SHAPY","Lamps: 250","Length: 48m"],symbol:"✦"},
+    {id:"shapy-66-18m",name:"SHAPY 66-Bulb LED Series · 18m",brand:"SHAPY",department:"Lighting",type:"LED Series",price:120,description:"66-bulb decorative LED series, 18 metres.",specs:["Brand: SHAPY","Bulbs: 66","Length: 18m"],symbol:"✦"},
+    {id:"ht-150-led",name:"HT 150-Lamp LED Chain",brand:"HT",department:"Lighting",type:"LED Series",price:330,description:"150-lamp LED decorative chain.",specs:["Brand: HT","Lamps: 150"],symbol:"✧"},
+    {id:"small-jumar",name:"Small Jumar",brand:"Decorative Lighting",department:"Lighting",type:"Jumar & Chandeliers",price:120,description:"Small decorative hanging light. Confirm design and availability with the shop.",specs:["Type: Small jumar","Design: Confirm with shop"],symbol:"♢"},
+    {id:"big-jumar",name:"Big Jumar",brand:"Decorative Lighting",department:"Lighting",type:"Jumar & Chandeliers",price:250,description:"Large decorative hanging light. Confirm design and availability with the shop.",specs:["Type: Big jumar","Design: Confirm with shop"],symbol:"♢"},
+    {id:"bajaj-bahar-fan",name:"Bajaj Bahar 1400mm Ceiling Fan",brand:"Bajaj",department:"Fans",type:"Ceiling Fans",price:3400,description:"1400mm ceiling fan. Confirm colour and stock with the shop.",specs:["Brand: Bajaj","Sweep: 1400mm","Type: Ceiling fan"],symbol:"✺"},
+    {id:"bajaj-maxima-fan",name:"Bajaj Maxima Ceiling Fan",brand:"Bajaj",department:"Fans",type:"Ceiling Fans",price:2250,description:"Bajaj Maxima ceiling fan.",specs:["Brand: Bajaj","Type: Ceiling fan"],symbol:"✺"},
+    {id:"table-wall-fans",name:"Table & Wall Fans",brand:"Multiple brands",department:"Fans",type:"Table & Wall Fans",price:null,description:"Table fans and wall-mounted fans. Ask for available models.",specs:["Type: Table / wall fan","Models: Confirm with shop"],symbol:"✺"},
+    {id:"fan-regulators",name:"Fan Regulators & Fittings",brand:"Multiple brands",department:"Fans",type:"Fan Accessories",price:null,description:"Fan regulators, fittings and related accessories.",specs:["Type: Fan accessories","Compatibility: Confirm with shop"],symbol:"◉"},
+    {id:"polycab-green-wire",name:"Polycab Green Wire 1 sq mm",brand:"Polycab",department:"Wires & Cables",type:"House Wires",price:3880,description:"Polycab green house wire, 1 sq mm. Price is a reference and requires confirmation.",specs:["Brand: Polycab","Colour: Green","Size: 1 sq mm"],symbol:"〰"},
+    {id:"polycab-suprema",name:"Polycab Suprema House Wire",brand:"Polycab",department:"Wires & Cables",type:"House Wires",price:null,description:"Polycab Suprema house wire range. Ask for size and coil price.",specs:["Brand: Polycab","Series: Suprema","Size: Confirm with shop"],symbol:"〰"},
+    {id:"flexible-cables",name:"Flexible Cables",brand:"Multiple brands",department:"Wires & Cables",type:"Flexible Cables",price:null,description:"Flexible electrical cable options. Ask for size and length.",specs:["Type: Flexible cable","Size and length: Confirm with shop"],symbol:"〰"},
+    {id:"extension-boards",name:"Extension Boards & Cords",brand:"Multiple brands",department:"Wires & Cables",type:"Extension Boards",price:null,description:"Extension boards and power cords in different configurations.",specs:["Type: Extension board / cord","Socket count: Confirm with shop"],symbol:"▤"},
+    {id:"anchor-roma-switch",name:"Anchor Roma Switch",brand:"Anchor",department:"Switches & Sockets",type:"Switches",price:73,priceLabel:"From ₹73*",description:"Anchor Roma switch range. Price varies by switch type.",specs:["Brand: Anchor","Range: Roma","Starting reference price: ₹73"],symbol:"▣"},
+    {id:"anchor-6a-socket",name:"Anchor 6A 3-Pin Socket",brand:"Anchor",department:"Switches & Sockets",type:"Sockets",price:39.88,description:"Anchor 6A three-pin socket.",specs:["Brand: Anchor","Rating: 6A","Type: 3-pin socket"],symbol:"▣"},
+    {id:"plugs-adaptors",name:"Plugs & Adaptors",brand:"Multiple brands",department:"Switches & Sockets",type:"Plugs & Adaptors",price:null,description:"Electrical plugs and adaptors. Ask for available types.",specs:["Type: Plugs / adaptors","Rating: Confirm with shop"],symbol:"⌁"},
+    {id:"holders-connectors",name:"Holders, Connectors & Clips",brand:"Multiple brands",department:"Switches & Sockets",type:"Electrical Accessories",price:null,description:"Lamp holders, connectors, clips and small electrical fittings.",specs:["Type: Electrical accessories","Variants: Confirm with shop"],symbol:"⌁"},
+    {id:"bajaj-dx6",name:"Bajaj DX 6 Dry Iron 1000W",brand:"Bajaj",department:"Appliances",type:"Irons",price:1540,description:"Bajaj DX 6 dry iron, 1000W.",specs:["Brand: Bajaj","Model: DX 6","Power: 1000W","Type: Dry iron"],symbol:"▱"},
+    {id:"bajaj-dx2",name:"Bajaj DX 2 Dry Iron 600W",brand:"Bajaj",department:"Appliances",type:"Irons",price:1030,description:"Bajaj DX 2 dry iron, 600W.",specs:["Brand: Bajaj","Model: DX 2","Power: 600W","Type: Dry iron"],symbol:"▱"},
+    {id:"bajaj-majesty-dx11",name:"Bajaj Majesty DX 11 Dry Iron",brand:"Bajaj",department:"Appliances",type:"Irons",price:1210,description:"Bajaj Majesty DX 11 dry iron.",specs:["Brand: Bajaj","Model: Majesty DX 11","Type: Dry iron"],symbol:"▱"},
+    {id:"bajaj-popular-plus",name:"Bajaj Popular Plus Dry Iron",brand:"Bajaj",department:"Appliances",type:"Irons",price:1090,description:"Bajaj Popular Plus dry iron.",specs:["Brand: Bajaj","Model: Popular Plus","Type: Dry iron"],symbol:"▱"},
+    {id:"bajaj-flashy-heater",name:"Bajaj Flashy Room Heater",brand:"Bajaj",department:"Appliances",type:"Room Heaters",price:880,description:"Bajaj Flashy room heater. Confirm current stock and specifications.",specs:["Brand: Bajaj","Model: Flashy","Type: Room heater"],symbol:"♨"},
+    {id:"bajaj-icx160ts",name:"Bajaj ICX 160TS Neo Induction Cooktop",brand:"Bajaj",department:"Appliances",type:"Induction Cooktops",price:2789,description:"Bajaj ICX 160TS Neo induction cooktop.",specs:["Brand: Bajaj","Model: ICX 160TS Neo","Type: Induction cooktop"],symbol:"◉"},
+    {id:"torches-emergency",name:"Torches & Emergency Lights",brand:"Multiple brands",department:"Electrical Essentials",type:"Torches & Emergency Lights",price:null,description:"Portable torches and emergency lighting options.",specs:["Type: Torch / emergency light","Models: Confirm with shop"],symbol:"⌁"},
+    {id:"electrical-tools",name:"Electrical Tools",brand:"Multiple brands",department:"Electrical Essentials",type:"Tools",price:null,description:"Everyday electrical tools. Ask for available models.",specs:["Type: Electrical tools","Models: Confirm with shop"],symbol:"⚒"},
+    {id:"decoration-items",name:"Decoration Items",brand:"Multiple brands",department:"Electrical Essentials",type:"Decoration Items",price:null,description:"Decorative electrical items and seasonal lighting. Ask for current range.",specs:["Type: Decoration items","Range: Confirm with shop"],symbol:"✧"}
+  ];
+
+  const departments = [
+    {name:"All",icon:"▦",subtitle:"Full catalogue"},
+    {name:"Appliances",icon:"⌂",subtitle:"Irons, heaters"},
+    {name:"Lighting",icon:"✦",subtitle:"Bulbs, battens"},
+    {name:"Fans",icon:"✺",subtitle:"Ceiling, wall"},
+    {name:"Wires & Cables",icon:"〰",subtitle:"Wires, cords"},
+    {name:"Switches & Sockets",icon:"▣",subtitle:"Switches, plugs"},
+    {name:"Electrical Essentials",icon:"⌁",subtitle:"Tools, torches"}
+  ];
+
   let cart = [];
+  let currentDepartment = "All";
+  let currentType = "All";
+  let searchTerm = "";
+  let selectedProduct = null;
+  let modalQty = 1;
   let currentStep = 1;
 
-  const year = document.getElementById("year");
-  if (year) year.textContent = new Date().getFullYear();
+  const $ = id => document.getElementById(id);
+  const money = value => "₹" + Number(value).toLocaleString("en-IN", {maximumFractionDigits:2});
+  const year = $("year"); if (year) year.textContent = new Date().getFullYear();
 
-  // ---------------- STYLES ----------------
-
-  const style = document.createElement("style");
-
-  style.textContent = `
-    #shop-cart-btn {
-      position:fixed;
-      bottom:20px;
-      right:18px;
-      z-index:9998;
-      background:#102b46;
-      color:white;
-      border:0;
-      padding:14px 20px;
-      border-radius:30px;
-      font-weight:bold;
-      box-shadow:0 4px 15px #0003;
-      cursor:pointer;
-    }
-
-    #shop-cart {
-      display:none;
-      position:fixed;
-      inset:0;
-      z-index:9999;
-      background:#0009;
-      justify-content:center;
-      align-items:center;
-      padding:12px;
-    }
-
-    #shop-cart.open { display:flex; }
-
-    .cart-box {
-      background:white;
-      color:#172b40;
-      width:100%;
-      max-width:480px;
-      max-height:92vh;
-      overflow:auto;
-      border-radius:15px;
-      padding:20px;
-      box-sizing:border-box;
-    }
-
-    .cart-item {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      padding:12px 0;
-      border-bottom:1px solid #ddd;
-    }
-
-    .cart-item button {
-      padding:7px 10px;
-      margin:2px;
-      cursor:pointer;
-    }
-
-    .checkout-input {
-      width:100%;
-      box-sizing:border-box;
-      padding:12px;
-      margin:7px 0;
-      border:1px solid #ccc;
-      border-radius:7px;
-      font-size:15px;
-      background:white;
-      color:#172b40;
-    }
-
-    .cart-action {
-      background:#102b46;
-      color:white;
-      border:0;
-      padding:13px;
-      border-radius:7px;
-      width:100%;
-      margin-top:10px;
-      cursor:pointer;
-      font-weight:bold;
-    }
-
-    .cart-action:disabled {
-      opacity:.6;
-      cursor:wait;
-    }
-
-    .add-cart-btn {
-      background:#102b46;
-      color:white;
-      border:0;
-      padding:10px 15px;
-      border-radius:6px;
-      margin-top:10px;
-      cursor:pointer;
-    }
-
-    .checkout-step { display:none; }
-    .checkout-step.active { display:block; }
-
-    .step-label {
-      color:#64748b;
-      font-size:13px;
-      margin:10px 0 18px;
-    }
-
-    .payment-option {
-      display:block;
-      border:1px solid #d5dce5;
-      border-radius:9px;
-      padding:13px;
-      margin:10px 0;
-      cursor:pointer;
-    }
-
-    .payment-option input {
-      margin-right:8px;
-    }
-
-    .checkout-note {
-      background:#f1f5f9;
-      padding:12px;
-      border-radius:8px;
-      font-size:13px;
-      line-height:1.6;
-      margin:12px 0;
-    }
-
-    #cart-message {
-      margin-top:12px;
-      line-height:1.7;
-      overflow-wrap:anywhere;
-    }
-
-    #cart-message a {
-      color:#102b46;
-      font-weight:bold;
-    }
-
-    .back-button {
-      background:#e8edf3;
-      color:#172b40;
-      border:0;
-      padding:12px;
-      border-radius:7px;
-      width:100%;
-      margin-top:8px;
-      cursor:pointer;
-    }
-  `;
-
-  document.head.appendChild(style);
-
-  // ---------------- CART HTML ----------------
-
-  document.body.insertAdjacentHTML("beforeend", `
-    <button id="shop-cart-btn" type="button">
-      🛒 Cart (<span id="cart-count">0</span>)
-    </button>
-
-    <div id="shop-cart">
-      <div class="cart-box">
-
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <h2 style="margin:0">Your Cart</h2>
-          <button id="close-cart" type="button">✕</button>
-        </div>
-
-        <div class="step-label" id="step-label">
-          Step 1 of 3 — Your Cart
-        </div>
-
-        <section class="checkout-step active" id="step-1">
-          <div id="cart-items"></div>
-
-          <h3 id="cart-total">Estimated total: ₹0</h3>
-
-          <p class="checkout-note">
-            Catalogue prices are online reference prices only.
-            Final selling prices and delivery charges must be
-            confirmed by M. RAJ ELECTRIC.
-          </p>
-
-          <button class="cart-action" id="to-shipping" type="button">
-            Continue to Shipping
-          </button>
-        </section>
-
-        <section class="checkout-step" id="step-2">
-          <h3>Shipping Details</h3>
-
-          <form id="shipping-form">
-
-            <input class="checkout-input"
-              name="customer_name"
-              placeholder="Full name"
-              required>
-
-            <input class="checkout-input"
-              name="customer_phone"
-              type="tel"
-              inputmode="numeric"
-              maxlength="10"
-              placeholder="10-digit mobile number"
-              required>
-
-            <input class="checkout-input"
-              name="house"
-              placeholder="House / Flat / Building"
-              required>
-
-            <input class="checkout-input"
-              name="street"
-              placeholder="Street / Area"
-              required>
-
-            <input class="checkout-input"
-              name="city"
-              placeholder="City: Morbi or Rajkot"
-              required>
-
-            <input class="checkout-input"
-              name="state"
-              value="Gujarat"
-              placeholder="State"
-              required>
-
-            <input class="checkout-input"
-              name="pincode"
-              inputmode="numeric"
-              maxlength="6"
-              placeholder="6-digit PIN code"
-              required>
-
-            <input class="checkout-input"
-              name="landmark"
-              placeholder="Landmark / Delivery instructions">
-
-            <button class="cart-action" type="submit">
-              Continue to Payment
-            </button>
-          </form>
-
-          <button class="back-button" id="back-to-cart" type="button">
-            Back to Cart
-          </button>
-        </section>
-
-        <section class="checkout-step" id="step-3">
-          <h3>Select Payment Method</h3>
-
-          <div id="payment-summary"></div>
-
-          <label class="payment-option">
-            <input type="radio" name="payment_method" value="UPI" checked>
-            <strong>UPI — 100% Advance</strong>
-            <p>Pay the full confirmed product amount through UPI.</p>
-          </label>
-
-          <label class="payment-option">
-            <input type="radio" name="payment_method" value="COD">
-            <strong>Cash on Delivery — 5% Advance</strong>
-            <p>Pay 5% of confirmed product value through UPI.
-            Pay the remaining 95% on delivery.</p>
-          </label>
-
-          <div class="checkout-note">
-            <strong>Shop UPI ID:</strong>
-            <div style="margin-top:6px">
-              Q698380663@ybl
-              <button type="button" id="copy-upi">Copy UPI ID</button>
-            </div>
-            <p>
-              Do not pay yet. The displayed catalogue prices are
-              estimates. Wait for the shop to confirm the final
-              amount and payment instructions.
-            </p>
-          </div>
-
-          <button class="cart-action" id="submit-order" type="button">
-            Submit Order Request
-          </button>
-
-          <button class="back-button" id="back-to-shipping" type="button">
-            Back to Shipping
-          </button>
-        </section>
-
-        <div id="cart-message" role="status"></div>
-
-      </div>
-    </div>
-  `);
-
-  const panel = document.getElementById("shop-cart");
-  const itemsArea = document.getElementById("cart-items");
-  const countArea = document.getElementById("cart-count");
-  const totalArea = document.getElementById("cart-total");
-  const messageArea = document.getElementById("cart-message");
-  const shippingForm = document.getElementById("shipping-form");
-
-  // ---------------- HELPERS ----------------
-
-  function money(value) {
-    return "₹" + value.toLocaleString("en-IN", {
-      maximumFractionDigits: 2
-    });
+  function escapeHTML(value) { return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[char])); }
+  function productPrice(product) { return product.price === null ? '<span class="ask-price">Ask for price</span>' : `<span class="product-price">${escapeHTML(product.priceLabel || money(product.price))}</span>`; }
+  function getTypes() {
+    const list = products.filter(p => currentDepartment === "All" || p.department === currentDepartment).map(p => p.type);
+    return ["All", ...new Set(list)];
   }
-
-  function makeOrderId() {
-    const d = new Date();
-
-    const date = [
-      d.getFullYear(),
-      String(d.getMonth() + 1).padStart(2, "0"),
-      String(d.getDate()).padStart(2, "0")
-    ].join("");
-
-    return "MRAJ-" + date + "-" +
-      Math.floor(1000 + Math.random() * 9000);
+  function filteredProducts() {
+    let list = products.filter(p => (currentDepartment === "All" || p.department === currentDepartment) && (currentType === "All" || p.type === currentType));
+    if (searchTerm) list = list.filter(p => [p.name,p.brand,p.department,p.type,p.description].join(" ").toLowerCase().includes(searchTerm));
+    const sort = $("sort-select")?.value || "featured";
+    if (sort === "price-low") list.sort((a,b) => (a.price ?? Infinity) - (b.price ?? Infinity));
+    if (sort === "price-high") list.sort((a,b) => (b.price ?? -Infinity) - (a.price ?? -Infinity));
+    if (sort === "name") list.sort((a,b) => a.name.localeCompare(b.name));
+    return list;
   }
-
-  function getPrice(card) {
-    const text =
-      card.querySelector(".price")?.textContent.trim() || "";
-
-    if (/ask for latest price/i.test(text)) return null;
-    if (/^from/i.test(text)) return null;
-
-    const match = text.replace(/,/g, "").match(/₹\s*(\d+(?:\.\d{1,2})?)/);
-
-    return match ? Number(match[1]) : null;
+  function renderDepartments() {
+    $("department-grid").innerHTML = departments.map(d => `<button class="department-card ${currentDepartment === d.name ? "active" : ""}" type="button" data-department="${escapeHTML(d.name)}"><span class="department-icon">${d.icon}</span><b>${escapeHTML(d.name === "All" ? "All products" : d.name)}</b><small>${escapeHTML(d.subtitle)}</small></button>`).join("");
   }
+  function renderTypes() {
+    const types = getTypes();
+    if (!types.includes(currentType)) currentType = "All";
+    $("type-chips").innerHTML = types.map(type => `<button class="type-chip ${currentType === type ? "active" : ""}" type="button" data-type="${escapeHTML(type)}">${escapeHTML(type === "All" ? "All product types" : type)}</button>`).join("");
+  }
+  function renderProducts() {
+    const list = filteredProducts();
+    $("catalogue-count").textContent = `${list.length} product${list.length === 1 ? "" : "s"}`;
+    $("catalogue-title").textContent = currentType !== "All" ? currentType : currentDepartment === "All" ? "All products" : currentDepartment;
+    $("catalogue-subtitle").textContent = searchTerm ? `Search results for “${searchTerm}”` : "Select a product to view details and available options";
+    $("product-grid").innerHTML = list.map(p => `<article class="product-card"><div class="product-visual" role="button" tabindex="0" data-open-product="${p.id}" aria-label="View ${escapeHTML(p.name)}"><span class="visual-symbol">${p.symbol}</span><span class="visual-caption">PRODUCT IMAGE</span></div><div class="product-content"><div class="product-brand">${escapeHTML(p.brand)}</div><h4>${escapeHTML(p.name)}</h4><p class="product-description">${escapeHTML(p.description)}</p><div class="product-bottom">${productPrice(p)}<button class="product-open" type="button" data-open-product="${p.id}">Details ↗</button></div><button class="add-cart-btn" type="button" data-add-product="${p.id}">Add to Cart</button></div></article>`).join("");
+    $("empty-state").hidden = list.length > 0;
+  }
+  function renderCatalogue() { renderDepartments(); renderTypes(); renderProducts(); }
 
+  function openProduct(id) {
+    selectedProduct = products.find(p => p.id === id); if (!selectedProduct) return;
+    modalQty = 1;
+    $("modal-brand").textContent = selectedProduct.brand + " · " + selectedProduct.type;
+    $("modal-title").textContent = selectedProduct.name;
+    $("modal-description").textContent = selectedProduct.description;
+    $("modal-price").textContent = selectedProduct.price === null ? "Price to be confirmed" : (selectedProduct.priceLabel || money(selectedProduct.price));
+    $("modal-specs").innerHTML = selectedProduct.specs.map(s => `<div>• ${escapeHTML(s)}</div>`).join("");
+    $("modal-image").innerHTML = `<span class="visual-symbol">${selectedProduct.symbol}</span><span class="image-note">Exact product photos can be added after model confirmation</span>`;
+    $("modal-thumbs").innerHTML = `<button class="modal-thumb" type="button" aria-label="Product image 1">${selectedProduct.symbol}</button>`;
+    $("modal-qty").textContent = modalQty;
+    $("product-modal").classList.add("open");
+    $("product-modal").setAttribute("aria-hidden","false");
+  }
+  function closeProduct() { $("product-modal").classList.remove("open"); $("product-modal").setAttribute("aria-hidden","true"); }
+  function addToCart(product, qty=1) {
+    const existing = cart.find(item => item.id === product.id);
+    if (existing) existing.qty += qty; else cart.push({id:product.id,name:product.name,price:product.price,qty});
+    renderCart();
+  }
+  function renderCart() {
+    const count = cart.reduce((sum,item) => sum + item.qty,0);
+    $("cart-count").textContent = count; $("header-cart-count").textContent = count;
+    if (!cart.length) $("cart-items").innerHTML = '<p class="empty-state">Your cart is empty. Browse products and add items to begin.</p>';
+    else $("cart-items").innerHTML = cart.map(item => `<div class="cart-item"><div><b>${escapeHTML(item.name)}</b><small>${item.price === null ? "Price to be confirmed" : `${money(item.price)} each · reference price`}</small></div><div class="cart-item-actions"><button type="button" data-cart-change="-1" data-cart-id="${item.id}" aria-label="Decrease quantity">−</button><span>${item.qty}</span><button type="button" data-cart-change="1" data-cart-id="${item.id}" aria-label="Increase quantity">+</button><button type="button" data-cart-remove="${item.id}" aria-label="Remove item">×</button></div></div>`).join("");
+    const totals = getTotals();
+    $("cart-total").textContent = money(totals.knownTotal) + (totals.hasUnknownPrice ? " + unpriced items" : "");
+  }
   function getTotals() {
-    let knownTotal = 0;
-    let hasUnknownPrice = false;
-
-    cart.forEach(item => {
-      if (item.price === null) {
-        hasUnknownPrice = true;
-      } else {
-        knownTotal += item.price * item.qty;
-      }
-    });
-
-    return { knownTotal, hasUnknownPrice };
+    let knownTotal = 0, hasUnknownPrice = false;
+    cart.forEach(item => { if (item.price === null) hasUnknownPrice = true; else knownTotal += item.price * item.qty; });
+    return {knownTotal,hasUnknownPrice};
   }
-
   function showStep(step) {
     currentStep = step;
-
-    document.querySelectorAll(".checkout-step").forEach(section => {
-      section.classList.remove("active");
-    });
-
-    document.getElementById("step-" + step).classList.add("active");
-
-    const labels = {
-      1: "Step 1 of 3 — Your Cart",
-      2: "Step 2 of 3 — Shipping Details",
-      3: "Step 3 of 3 — Payment Method"
-    };
-
-    document.getElementById("step-label").textContent = labels[step];
-    messageArea.textContent = "";
+    document.querySelectorAll(".checkout-step").forEach(section => section.classList.remove("active"));
+    $("step-" + step).classList.add("active");
+    $("step-label").textContent = `STEP ${step} OF 3 · ${["CART","DELIVERY DETAILS","PAYMENT PREFERENCE"][step-1]}`;
+    $("cart-message").innerHTML = "";
   }
+  function openCart() { $("shop-cart").classList.add("open"); $("shop-cart").setAttribute("aria-hidden","false"); renderCart(); showStep(1); }
+  function closeCart() { $("shop-cart").classList.remove("open"); $("shop-cart").setAttribute("aria-hidden","true"); }
 
-  // ---------------- CART ----------------
-
-  function renderCart() {
-    itemsArea.innerHTML = "";
-
-    let count = 0;
-
-    cart.forEach((item, index) => {
-      count += item.qty;
-
-      const row = document.createElement("div");
-      row.className = "cart-item";
-
-      const details = document.createElement("div");
-
-      const name = document.createElement("strong");
-      name.textContent = item.name;
-
-      const price = document.createElement("div");
-      price.textContent = item.price === null
-        ? "Price to be confirmed"
-        : money(item.price) + " each (reference)";
-
-      details.append(name, price);
-
-      const controls = document.createElement("div");
-
-      function addControl(label, action) {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = label;
-        button.onclick = action;
-        controls.appendChild(button);
-      }
-
-      addControl("−", () => changeQty(index, -1));
-
-      const quantity = document.createElement("span");
-      quantity.textContent = " " + item.qty + " ";
-      controls.appendChild(quantity);
-
-      addControl("+", () => changeQty(index, 1));
-
-      addControl("✕", () => {
-        cart.splice(index, 1);
-        renderCart();
-      });
-
-      row.append(details, controls);
-      itemsArea.appendChild(row);
-    });
-
-    if (!cart.length) {
-      itemsArea.textContent = "Your cart is empty.";
-    }
-
-    const totals = getTotals();
-
-    countArea.textContent = count;
-
-    totalArea.textContent =
-      "Estimated product total: " + money(totals.knownTotal) +
-      (totals.hasUnknownPrice ? " + items awaiting price confirmation" : "");
-  }
-
-  function changeQty(index, amount) {
-    if (!cart[index]) return;
-
-    cart[index].qty += amount;
-
-    if (cart[index].qty <= 0) {
-      cart.splice(index, 1);
-    }
-
-    renderCart();
-  }
-
-  document.getElementById("shop-cart-btn").onclick = () => {
-    panel.classList.add("open");
-    renderCart();
-    showStep(1);
-  };
-
-  document.getElementById("close-cart").onclick = () => {
-    panel.classList.remove("open");
-  };
-
-  panel.addEventListener("click", event => {
-    if (event.target === panel) {
-      panel.classList.remove("open");
-    }
+  document.addEventListener("click", event => {
+    const department = event.target.closest("[data-department]");
+    if (department) { currentDepartment = department.dataset.department; currentType = "All"; renderCatalogue(); $("catalogue-title").scrollIntoView({behavior:"smooth",block:"center"}); return; }
+    const type = event.target.closest("[data-type]");
+    if (type) { currentType = type.dataset.type; renderTypes(); renderProducts(); return; }
+    const open = event.target.closest("[data-open-product]");
+    if (open) { openProduct(open.dataset.openProduct); return; }
+    const add = event.target.closest("[data-add-product]");
+    if (add) { const p = products.find(item => item.id === add.dataset.addProduct); if (p) { addToCart(p); add.textContent = "Added ✓"; setTimeout(() => { if (add.isConnected) add.textContent = "Add to Cart"; },900); } return; }
+    const change = event.target.closest("[data-cart-change]");
+    if (change) { const item = cart.find(p => p.id === change.dataset.cartId); if (item) { item.qty += Number(change.dataset.cartChange); if (item.qty < 1) cart = cart.filter(p => p.id !== item.id); renderCart(); } return; }
+    const remove = event.target.closest("[data-cart-remove]");
+    if (remove) { cart = cart.filter(p => p.id !== remove.dataset.cartRemove); renderCart(); }
   });
+  $("product-grid").addEventListener("keydown", event => { if ((event.key === "Enter" || event.key === " ") && event.target.matches("[data-open-product]")) { event.preventDefault(); openProduct(event.target.dataset.openProduct); } });
+  $("search-form").addEventListener("submit", event => { event.preventDefault(); searchTerm = $("search-input").value.trim().toLowerCase(); currentDepartment = "All"; currentType = "All"; renderCatalogue(); $("catalogue-title").scrollIntoView({behavior:"smooth",block:"center"}); });
+  $("search-input").addEventListener("input", () => { if (!$("search-input").value.trim()) { searchTerm = ""; renderCatalogue(); } });
+  $("sort-select").addEventListener("change", renderProducts);
+  $("close-product").addEventListener("click", closeProduct);
+  $("product-modal").addEventListener("click", event => { if (event.target === $("product-modal")) closeProduct(); });
+  $("modal-minus").addEventListener("click", () => { modalQty = Math.max(1,modalQty-1); $("modal-qty").textContent = modalQty; });
+  $("modal-plus").addEventListener("click", () => { modalQty = Math.min(99,modalQty+1); $("modal-qty").textContent = modalQty; });
+  $("modal-add").addEventListener("click", () => { if (selectedProduct) { addToCart(selectedProduct,modalQty); closeProduct(); openCart(); } });
+  $("shop-cart-btn").addEventListener("click",openCart); $("header-cart").addEventListener("click",openCart); $("close-cart").addEventListener("click",closeCart);
+  $("shop-cart").addEventListener("click",event => { if (event.target === $("shop-cart")) closeCart(); });
+  $("to-shipping").addEventListener("click", () => { if (!cart.length) { $("cart-message").textContent = "Please add products to your cart first."; return; } showStep(2); });
+  $("back-to-cart").addEventListener("click",() => showStep(1)); $("back-to-shipping").addEventListener("click",() => showStep(2));
 
-  // ---------------- ADD TO CART ----------------
-
-  document.querySelectorAll(".product-card").forEach(card => {
-    if (card.querySelector(".add-cart-btn")) return;
-
-    const button = document.createElement("button");
-
-    button.type = "button";
-    button.className = "add-cart-btn";
-    button.textContent = "Add to Cart";
-
-    button.onclick = () => {
-      const name = card.querySelector("h3")?.textContent.trim();
-
-      if (!name) return;
-
-      const price = getPrice(card);
-
-      const existing = cart.find(item =>
-        item.name === name && item.price === price
-      );
-
-      if (existing) {
-        existing.qty++;
-      } else {
-        cart.push({ name, price, qty: 1 });
-      }
-
-      renderCart();
-
-      button.textContent = "Added ✓";
-
-      setTimeout(() => {
-        button.textContent = "Add to Cart";
-      }, 1200);
-    };
-
-    card.appendChild(button);
-  });
-
-  // ---------------- CHECKOUT NAVIGATION ----------------
-
-  document.getElementById("to-shipping").onclick = () => {
-    if (!cart.length) {
-      messageArea.textContent = "Please add products to your cart.";
-      return;
-    }
-
-    showStep(2);
-  };
-
-  document.getElementById("back-to-cart").onclick = () => showStep(1);
-  document.getElementById("back-to-shipping").onclick = () => showStep(2);
-
-  shippingForm.addEventListener("submit", event => {
+  $("shipping-form").addEventListener("submit", event => {
     event.preventDefault();
-
-    const data = new FormData(shippingForm);
-
-    const city = String(data.get("city") || "")
-      .trim()
-      .toLowerCase();
-
-    if (city !== "morbi" && city !== "rajkot") {
-      messageArea.textContent =
-        "Sorry! Delivery is currently available only in Morbi and Rajkot.";
-      return;
-    }
-
-    const phone = String(data.get("customer_phone") || "").replace(/\D/g, "");
-    const pin = String(data.get("pincode") || "").replace(/\D/g, "");
-
-    if (!/^[6-9]\d{9}$/.test(phone)) {
-      messageArea.textContent =
-        "Please enter a valid 10-digit Indian mobile number.";
-      return;
-    }
-
-    if (!/^\d{6}$/.test(pin)) {
-      messageArea.textContent = "Please enter a valid 6-digit PIN code.";
-      return;
-    }
-
+    const data = new FormData(event.currentTarget);
+    const city = String(data.get("city") || "").trim().toLowerCase();
+    const phone = String(data.get("customer_phone") || "").replace(/\D/g,"");
+    const pin = String(data.get("pincode") || "").replace(/\D/g,"");
+    if (!event.currentTarget.reportValidity()) return;
+    if (!/^[6-9]\d{9}$/.test(phone)) { $("cart-message").textContent = "Enter a valid 10-digit Indian mobile number."; return; }
+    if (!/^\d{6}$/.test(pin)) { $("cart-message").textContent = "Enter a valid 6-digit PIN code."; return; }
+    if (city !== "morbi" && city !== "rajkot") { $("cart-message").textContent = "Delivery enquiries are currently accepted only for Morbi and Rajkot."; return; }
     const totals = getTotals();
-
-    const advance = totals.hasUnknownPrice
-      ? null
-      : totals.knownTotal * 0.05;
-
-    document.getElementById("payment-summary").textContent =
-      "Estimated product value: " + money(totals.knownTotal) +
-      (totals.hasUnknownPrice
-        ? " — some prices need confirmation."
-        : " | Estimated COD 5% advance: " + money(advance));
-
+    $("payment-summary").textContent = `Estimated known product value: ${money(totals.knownTotal)}${totals.hasUnknownPrice ? " + products awaiting price confirmation" : ` · Estimated 5% COD advance: ${money(totals.knownTotal * 0.05)}`}. Final amount will be confirmed by the shop.`;
     showStep(3);
   });
+  $("copy-upi").addEventListener("click",async () => { try { await navigator.clipboard.writeText(UPI_ID); $("cart-message").textContent = "UPI ID copied."; } catch { $("cart-message").textContent = "Shop UPI ID: " + UPI_ID; } });
 
-  // ---------------- COPY UPI ----------------
-
-  document.getElementById("copy-upi").onclick = async () => {
-    try {
-      await navigator.clipboard.writeText(UPI_ID);
-      messageArea.textContent = "UPI ID copied.";
-    } catch (error) {
-      messageArea.textContent = "UPI ID: " + UPI_ID;
-    }
-  };
-
-  // ---------------- EMAILJS ----------------
-
-  const emailReady = new Promise((resolve, reject) => {
-    if (window.emailjs) {
-      window.emailjs.init({ publicKey: PUBLIC_KEY });
-      resolve();
-      return;
-    }
-
-    const script = document.createElement("script");
-
-    script.src =
-      "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
-
-    script.onload = () => {
-      if (!window.emailjs) {
-        reject(new Error("EmailJS library did not load."));
-        return;
-      }
-
-      window.emailjs.init({ publicKey: PUBLIC_KEY });
-      resolve();
-    };
-
-    script.onerror = () => {
-      reject(new Error("Could not load EmailJS. Check internet connection."));
-    };
-
-    document.head.appendChild(script);
+  function makeOrderId() { const d = new Date(); const date = [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join(""); return "MRAJ-" + date + "-" + Math.floor(1000 + Math.random()*9000); }
+  const emailReady = new Promise((resolve,reject) => {
+    if (window.emailjs) { window.emailjs.init({publicKey:PUBLIC_KEY}); resolve(); return; }
+    const script = document.createElement("script"); script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+    script.onload = () => { if (!window.emailjs) { reject(new Error("EmailJS library did not load.")); return; } window.emailjs.init({publicKey:PUBLIC_KEY}); resolve(); };
+    script.onerror = () => reject(new Error("Could not load EmailJS. Check your internet connection.")); document.head.appendChild(script);
   });
 
-  // ---------------- SUBMIT ORDER ----------------
-
-  document.getElementById("submit-order").onclick = async () => {
-    if (!cart.length) {
-      messageArea.textContent = "Your cart is empty.";
-      return;
-    }
-
-    const data = new FormData(shippingForm);
-
+  $("submit-order").addEventListener("click",async () => {
+    if (!cart.length) { $("cart-message").textContent = "Your cart is empty."; showStep(1); return; }
+    const form = $("shipping-form"); if (!form.reportValidity()) { showStep(2); return; }
+    const data = new FormData(form);
     const customerName = String(data.get("customer_name") || "").trim();
-    const customerPhone = String(data.get("customer_phone") || "").replace(/\D/g, "");
+    const customerPhone = String(data.get("customer_phone") || "").replace(/\D/g,"");
     const city = String(data.get("city") || "").trim();
     const state = String(data.get("state") || "").trim();
     const pin = String(data.get("pincode") || "").trim();
-
-    if (!shippingForm.reportValidity()) return;
-
-    if (!["morbi", "rajkot"].includes(city.toLowerCase())) {
-      messageArea.textContent =
-        "Delivery is available only in Morbi and Rajkot.";
-      showStep(2);
-      return;
-    }
-
-    const method =
-      document.querySelector('input[name="payment_method"]:checked')?.value;
-
-    const totals = getTotals();
-    const orderId = makeOrderId();
-
-    const orderItems = cart.map(item =>
-      item.name + " x " + item.qty + " — " +
-      (item.price === null
-        ? "Price to confirm"
-        : money(item.price * item.qty) + " (reference)")
-    ).join("\n");
-
-    const address = [
-      data.get("house"),
-      data.get("street"),
-      city,
-      state,
-      pin,
-      data.get("landmark")
-    ].filter(Boolean).join(", ");
-
-    const estimatedTotal = totals.hasUnknownPrice
-      ? money(totals.knownTotal) + " + unpriced items"
-      : money(totals.knownTotal);
-
-    const estimatedAdvance = totals.hasUnknownPrice
-      ? "To be calculated after price confirmation"
-      : method === "UPI"
-        ? money(totals.knownTotal)
-        : money(totals.knownTotal * 0.05);
-
-    const remaining = totals.hasUnknownPrice
-      ? "To be confirmed"
-      : method === "UPI"
-        ? money(0)
-        : money(totals.knownTotal * 0.95);
-
-    const confirmation =
-      "Hello M. RAJ ELECTRIC,\n" +
-      "I want to place an order.\n\n" +
-      "Order ID: " + orderId + "\n" +
-      "Name: " + customerName + "\n" +
-      "Phone: " + customerPhone + "\n" +
-      "Address: " + address + "\n\n" +
-      "Items:\n" + orderItems + "\n\n" +
-      "Estimated product total: " + estimatedTotal + "\n" +
-      "Payment preference: " + method + "\n" +
-      "Estimated advance: " + estimatedAdvance + "\n" +
-      "Estimated remaining: " + remaining + "\n\n" +
-      "Please confirm final prices and delivery charges.";
-
-    const customerLink =
-      "https://wa.me/" + SHOP_PHONE +
-      "?text=" + encodeURIComponent(confirmation);
-
-    const submit = document.getElementById("submit-order");
-
-    submit.disabled = true;
-    submit.textContent = "Submitting...";
-    messageArea.textContent = "Please wait...";
-
+    if (!/^[6-9]\d{9}$/.test(customerPhone) || !/^\d{6}$/.test(pin) || !["morbi","rajkot"].includes(city.toLowerCase())) { showStep(2); $("cart-message").textContent = "Please recheck your mobile number, PIN code and delivery city."; return; }
+    const method = document.querySelector('input[name="payment_method"]:checked')?.value || "UPI";
+    const totals = getTotals(); const orderId = makeOrderId();
+    const orderItems = cart.map(item => `${item.name} x ${item.qty} — ${item.price === null ? "Price to confirm" : money(item.price*item.qty) + " (reference)"}`).join("\n");
+    const address = [data.get("house"),data.get("street"),city,state,pin,data.get("landmark")].filter(Boolean).join(", ");
+    const estimatedTotal = totals.hasUnknownPrice ? money(totals.knownTotal) + " + unpriced items" : money(totals.knownTotal);
+    const estimatedAdvance = totals.hasUnknownPrice ? "To be calculated after price confirmation" : method === "UPI" ? money(totals.knownTotal) : money(totals.knownTotal*0.05);
+    const remaining = totals.hasUnknownPrice ? "To be confirmed" : method === "UPI" ? money(0) : money(totals.knownTotal*0.95);
+    const confirmation = `Hello M. RAJ ELECTRIC,\nI want to place an order.\n\nOrder ID: ${orderId}\nName: ${customerName}\nPhone: ${customerPhone}\nAddress: ${address}\n\nItems:\n${orderItems}\n\nEstimated product total: ${estimatedTotal}\nPayment preference: ${method}\nEstimated advance: ${estimatedAdvance}\nEstimated remaining: ${remaining}\n\nPlease confirm final prices and delivery charges before payment.`;
+    const customerLink = "https://wa.me/" + SHOP_PHONE + "?text=" + encodeURIComponent(confirmation);
+    const submit = $("submit-order"); submit.disabled = true; submit.textContent = "Submitting request..."; $("cart-message").textContent = "Sending your order request...";
     try {
       await emailReady;
-
-      await window.emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          customer_name: customerName,
-          customer_phone: customerPhone,
-          order_items: orderItems,
-          order_total: estimatedTotal,
-          order_date: new Date().toLocaleString("en-IN"),
-          order_id: orderId,
-          customer_whatsapp_link: customerLink,
-          shipping_address: address,
-          payment_method: method,
-          payment_advance: estimatedAdvance,
-          payment_remaining: remaining,
-          payment_status: "Pending shop confirmation"
-        }
-      );
-
-      messageArea.innerHTML = "";
-
-      const success = document.createElement("strong");
-      success.textContent = "Order request submitted successfully!";
-
-      const id = document.createElement("p");
-      id.textContent = "Order ID: " + orderId;
-
-      const status = document.createElement("p");
-      status.textContent =
-        "Status: Pending shop confirmation. No payment has been verified.";
-
-      const note = document.createElement("p");
-      note.textContent =
-        "The shop will confirm your final product prices and delivery charges before payment.";
-
-      const link = document.createElement("a");
-      link.href = customerLink;
-      link.target = "_blank";
-      link.rel = "noopener";
-      link.textContent = "Send order details to shop on WhatsApp";
-
-      messageArea.append(success, id, status, note, link);
-
-      cart = [];
-      renderCart();
-      shippingForm.reset();
-
-      showStep(1);
-
+      await window.emailjs.send(SERVICE_ID,TEMPLATE_ID,{
+        customer_name:customerName,customer_phone:customerPhone,order_items:orderItems,order_total:estimatedTotal,
+        order_date:new Date().toLocaleString("en-IN"),order_id:orderId,customer_whatsapp_link:customerLink,
+        shipping_address:address,payment_method:method,payment_advance:estimatedAdvance,payment_remaining:remaining,
+        payment_status:"Pending shop confirmation — no payment verified"
+      });
+      $("cart-message").innerHTML = `<div class="cart-message"><b>Order request submitted successfully.</b><p>Order ID: <strong>${escapeHTML(orderId)}</strong></p><p>Status: Pending shop confirmation. No payment has been verified.</p><p>The shop will confirm final prices and delivery charges before payment.</p><a href="${customerLink}" target="_blank" rel="noopener">Send order details to shop on WhatsApp ↗</a></div>`;
+      cart = []; renderCart(); form.reset(); showStep(1);
+      // Keep the success message visible after returning to the cart step.
+      $("cart-message").innerHTML = `<div class="cart-message"><b>Order request submitted successfully.</b><p>Order ID: <strong>${escapeHTML(orderId)}</strong></p><p>Status: Pending shop confirmation. No payment has been verified.</p><p>The shop will confirm final prices and delivery charges before payment.</p><a href="${customerLink}" target="_blank" rel="noopener">Send order details to shop on WhatsApp ↗</a></div>`;
     } catch (error) {
-      console.error("Order error:", error);
+      console.error("Order error:",error);
+      $("cart-message").innerHTML = `Could not email the order: ${escapeHTML(error?.text || error?.message || String(error))}. You can send it through WhatsApp instead.<br><a href="${customerLink}" target="_blank" rel="noopener">Send order through WhatsApp ↗</a>`;
+    } finally { submit.disabled = false; submit.textContent = "Submit order request"; }
+  });
 
-      messageArea.textContent =
-        "EMAIL ERROR: " +
-        (error?.text || error?.message || String(error)) +
-        " Please try WhatsApp instead.";
-
-      const link = document.createElement("a");
-      link.href = customerLink;
-      link.target = "_blank";
-      link.rel = "noopener";
-      link.textContent = "Send order through WhatsApp";
-
-      messageArea.appendChild(document.createElement("br"));
-      messageArea.appendChild(link);
-
-    } finally {
-      submit.disabled = false;
-      submit.textContent = "Submit Order Request";
-    }
-  };
-
-  renderCart();
-
+  renderCatalogue(); renderCart();
 })();
 
